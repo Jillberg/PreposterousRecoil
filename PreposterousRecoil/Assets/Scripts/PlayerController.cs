@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,13 +11,21 @@ public class PlayerController : MonoBehaviour
     Transform rotatePoint;
     private bool canMove = true;
 
+    public static event Action OnGroundCheck;
+    public static event Action IsAirborne;
 
     [Header("Movement")]
     public float moveSpeed = 5f;
     float horizontalMovement;
     private bool isFacingRight = true;
 
-    
+    [Header("GroundCheck")]
+    public Transform groundCheckPos;
+    public Vector2 groundCheckSize=new Vector2(0.5f,0.5f);
+    public LayerMask groundLayer;
+    private bool wasGroundedLastFrame = false;
+
+
 
     void OnEnable()
     {
@@ -56,7 +64,12 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
 
+    }
 
+    void FixedUpdate()
+    {
+        SendOnGroundCheckEvent();
+        SendIsAirborneEvent();
     }
     
 
@@ -80,5 +93,41 @@ public class PlayerController : MonoBehaviour
             rotatePoint.localScale = cls;
 
         }
+    
+    }
+
+    private bool IsGrounded()
+    {
+        if (Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void SendOnGroundCheckEvent()
+    {
+        bool currentStatus = IsGrounded();
+        if (currentStatus&&! wasGroundedLastFrame)
+        {
+            OnGroundCheck?.Invoke();
+            Debug.Log("Just touched the ground");
+        }
+        wasGroundedLastFrame= currentStatus;
+    }
+
+    private void SendIsAirborneEvent()
+    {
+        if (!IsGrounded())
+        {
+            IsAirborne?.Invoke();
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize);
+
     }
 }
