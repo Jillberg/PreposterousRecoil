@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         if (horizontalMovement != 0&&canMove)
         {
             rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
-            Flip();
+           // Flip();
         }
 
     }
@@ -87,11 +87,11 @@ public class PlayerController : MonoBehaviour
             Vector3 ls = transform.localScale;
             Vector3 cls = rotatePoint.localScale;
             ls.x *= -1;
-            cls.x *= -1;
-            cls.y *= -1;
+           // cls.x *= -1;
+           // cls.y *= -1;
             transform.localScale = ls;
-            rotatePoint.localScale = cls;
-
+         //   rotatePoint.localScale = cls;
+         
         }
     
     }

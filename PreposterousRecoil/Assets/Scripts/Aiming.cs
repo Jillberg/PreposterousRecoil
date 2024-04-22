@@ -13,12 +13,14 @@ public class Aiming : MonoBehaviour
     public static event Action OnRecoilEnd;
     private Transform gunPosition;
     public Rigidbody2D rb;  // Reference to the Rigidbody2D component
+    public Transform playerTransform;
 
     [Header("RecoilParameters")]
     public float recoilStrength = 5f;  // Adjustable recoil strength
     //private bool gunIsFacingRight = true;
 
     [Header("Ammunition")]
+    private bool gunIsFacingRight = true;
     private bool isReloading = false;
     public float reloadTime = 1f;
     private int ammo;
@@ -77,6 +79,7 @@ public class Aiming : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         ammo = maximumAmmo;
         gunPosition = transform.Find("BulletTransform");
@@ -129,6 +132,7 @@ public class Aiming : MonoBehaviour
         Vector3 rotation = mousePos - transform.position;
         float rotz = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, rotz);
+        GunFlip();
     }
 
     private void Fire()
@@ -219,17 +223,21 @@ public class Aiming : MonoBehaviour
     }
 
 
-    /* private void GunFlip()
+     private void GunFlip()
       {
           if(mousePos.x < transform.position.x && gunIsFacingRight||mousePos.x>transform.position.x&&!gunIsFacingRight){
               gunIsFacingRight=!gunIsFacingRight;
               Vector3 ls = transform.localScale;
+            Vector3 lls = playerTransform.localScale;
 
-              ls.y *= -1;
-              transform.localScale=ls;
+            ls.y *= -1;
+            ls.x *= -1;
+            lls.x *= -1;
+             transform.localScale=ls;
+              playerTransform.localScale=lls;
 
           }
-      }*/
+      }
 
 
 }
