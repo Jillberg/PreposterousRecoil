@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
     public Rigidbody2D rb;
     Transform rotatePoint;
+    public Animator animator;
     private bool canMove = true;
 
     public static event Action OnGroundCheck;
@@ -46,11 +47,18 @@ public class PlayerController : MonoBehaviour
 
     private void HandleRecoilStart()
     {
+        if (IsGrounded()) { animator.SetBool("isPlayerRecoil", true); }
+        else
+        {
+            animator.SetBool("isAirborne", true);
+        }
+        
         canMove = false;
     }
 
     private void HandleRecoilEnd()
     {
+        animator.SetBool("isPlayerRecoil", false);
         canMove = true;
     }
 
@@ -106,9 +114,10 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer))
         {
-            
+            animator.SetBool("isAirborne", false);
             return true;
         }
+       
         return false;
     }
 

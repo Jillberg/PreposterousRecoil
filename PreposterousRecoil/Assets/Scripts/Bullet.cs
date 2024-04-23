@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     private Vector3 shootDir;
+    
     public float bulletSpeed = 20f;
     
     public void Setup(Vector3 shootDirection)
@@ -28,12 +28,13 @@ public class Bullet : MonoBehaviour
          if (target!= null) {
              target.Damage();
          }*/
-        if (collision.GetComponent<CompositeCollider2D>()!=null){
-
+        if (collision.GetComponent<Mesh>()!=null){
             Destroy(gameObject);
-            Debug.Log("dead");
+            Debug.Log(collision);
+
         }
-       
+        
+
     }
 
     public static float GetAngleFromVectorFloat(Vector3 dir)

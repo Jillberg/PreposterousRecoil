@@ -9,6 +9,7 @@ public class Aiming : MonoBehaviour
     //should not mess around with these guys
     private Camera mainCam;
     private Vector3 mousePos;
+    public Animator animator;
     public static event Action OnRecoilStart;
     public static event Action OnRecoilEnd;
     public event EventHandler<OnShootEventArgs> OnShoot;
@@ -148,7 +149,8 @@ public class Aiming : MonoBehaviour
     private void Fire()
     {
             ammo--;
-            OnShoot?.Invoke(this,new OnShootEventArgs
+            animator.SetBool("isRecoiling", true);
+             OnShoot?.Invoke(this,new OnShootEventArgs
             {
                 gunEndPointPosition = gunEndPointPosition.position,
                 shootPosition=mousePos
@@ -210,6 +212,7 @@ public class Aiming : MonoBehaviour
     IEnumerator EndRecoil()
     {
         yield return new WaitForSeconds(0.2f);
+        animator.SetBool("isRecoiling",false);
         OnRecoilEnd?.Invoke();
     }
 
