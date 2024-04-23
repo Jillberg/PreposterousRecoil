@@ -11,7 +11,15 @@ public class Aiming : MonoBehaviour
     private Vector3 mousePos;
     public static event Action OnRecoilStart;
     public static event Action OnRecoilEnd;
+    public event EventHandler<OnShootEventArgs> OnShoot;
+    public class OnShootEventArgs:EventArgs
+    {
+        public Vector3 gunEndPointPosition;
+        public Vector3 shootPosition;
+      }
+
     private Transform gunPosition;
+    private Transform gunEndPointPosition;
     public Rigidbody2D rb;  // Reference to the Rigidbody2D component
     public Transform playerTransform;
 
@@ -83,6 +91,7 @@ public class Aiming : MonoBehaviour
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         ammo = maximumAmmo;
         gunPosition = transform.Find("BulletTransform");
+        gunEndPointPosition = transform.Find("GunEndPointPosition");
 
 
         if (ammoControl != null)
@@ -115,6 +124,14 @@ public class Aiming : MonoBehaviour
 
     void FixedUpdate()
     {
+       
+
+        mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0;
+        Vector3 rotation = mousePos - transform.position;
+        float rotz = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, rotz);
+        GunFlip();
         if (shouldFire)
         {
             Fire();
@@ -126,18 +143,16 @@ public class Aiming : MonoBehaviour
             StartCoroutine(Reload());
             shouldReload = false; // Reset the flag
         }
-
-        mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-        Vector3 rotation = mousePos - transform.position;
-        float rotz = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, rotz);
-        GunFlip();
     }
 
     private void Fire()
     {
             ammo--;
+            OnShoot?.Invoke(this,new OnShootEventArgs
+            {
+                gunEndPointPosition = gunEndPointPosition.position,
+                shootPosition=mousePos
+            });
             ApplyRecoil();
 
             if (ammoControl != null)
