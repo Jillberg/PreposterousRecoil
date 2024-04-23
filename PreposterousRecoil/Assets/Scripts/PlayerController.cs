@@ -25,6 +25,11 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     private bool wasGroundedLastFrame = false;
 
+    [Header("Gravity")]
+    public float baseGravity = 10f;
+    public float maxFallSpeed = 18f;
+    public float fallSpeedMultiplier = 2f;
+
 
 
     void OnEnable()
@@ -70,6 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         SendOnGroundCheckEvent();
         SendIsAirborneEvent();
+        ProcessGravity();
     }
     
 
@@ -100,6 +106,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer))
         {
+            
             return true;
         }
         return false;
@@ -112,6 +119,7 @@ public class PlayerController : MonoBehaviour
         {
             OnGroundCheck?.Invoke();
             Debug.Log("Just touched the ground");
+            Debug.Log(rb.velocity.y);
         }
         wasGroundedLastFrame= currentStatus;
     }
@@ -129,5 +137,19 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.white;
         Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize);
 
+    }
+
+    private void ProcessGravity()
+    {
+        if (rb.velocity.y < 0)
+        {
+            rb.gravityScale = baseGravity * fallSpeedMultiplier;//make falling faster
+            //rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y);
+        }
+        else
+        {
+            rb.gravityScale = baseGravity;
+        }
     }
 }

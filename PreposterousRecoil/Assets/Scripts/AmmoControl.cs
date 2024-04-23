@@ -24,7 +24,7 @@ public class AmmoControl : MonoBehaviour
         {
             Image newAmmo = Instantiate(CartridgePrefab, transform);
             newAmmo.sprite = AmmoLoaded;
-            newAmmo.color = Color.red;
+            //newAmmo.color = Color.red;
             ammos.Add(newAmmo);
         }
     }
@@ -36,12 +36,12 @@ public class AmmoControl : MonoBehaviour
             if (i < currentAmmos)
             {
                 ammos[i].sprite = AmmoLoaded;
-                ammos[i].color = Color.red;
+                //ammos[i].color = Color.red;
             }
             else
             {
                 ammos[i].sprite = AmmoUsed;
-                ammos[i].color = Color.white;
+                //ammos[i].color = Color.white;
             }
 
 
