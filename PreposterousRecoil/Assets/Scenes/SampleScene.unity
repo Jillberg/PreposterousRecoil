@@ -302,10 +302,13 @@ MonoBehaviour:
   rb: {fileID: 34405358}
   moveSpeed: 25
   groundCheckPos: {fileID: 488308493}
-  groundCheckSize: {x: 0.9, y: 0.09}
+  groundCheckSize: {x: 1.04, y: 0.13}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  baseGravity: 10
+  maxFallSpeed: 18
+  fallSpeedMultiplier: 2
 --- !u!114 &34405360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11673,8 +11676,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CartridgePrefab: {fileID: 7698600200574505256, guid: 764d26a0d13d6d34ab297470f83c1b19, type: 3}
-  AmmoLoaded: {fileID: 142582095, guid: 896d5ec805f642048b3e51576c9cd52b, type: 3}
-  AmmoUsed: {fileID: 1160708643, guid: 896d5ec805f642048b3e51576c9cd52b, type: 3}
+  AmmoLoaded: {fileID: 21300000, guid: 9eb1cf56262aeda4ea64d1eae5ec0e4e, type: 3}
+  AmmoUsed: {fileID: 21300000, guid: ba508ba7cfed738468d7544c64f3fc14, type: 3}
 --- !u!114 &1987195889
 MonoBehaviour:
   m_ObjectHideFlags: 0
