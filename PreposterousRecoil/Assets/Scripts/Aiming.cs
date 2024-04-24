@@ -11,6 +11,8 @@ public class Aiming : MonoBehaviour
     private Camera mainCam;
     private Vector3 mousePos;
     public Animator animator;
+    private bool spriteChanged = false;
+    [SerializeField] private GameObject Player;
     //public static event Action OnRecoilStart;
     //public static event Action OnRecoilEnd;
     public event EventHandler<OnRecoilStartEventArgs> OnRecoilStart;
@@ -70,12 +72,17 @@ public class Aiming : MonoBehaviour
     {
         PlayerController.OnGroundCheck += HandleLanding;
         PlayerController.IsAirborne += HandleMidair;
+        AmmoControl.OnAmmoSpriteChange += HandleAmmoSpriteChange;
+
+        Player.GetComponent<PlayerController>().OnAmmoChange += HandleAmmoChange;
     }
 
     void OnDisable()
     {
         PlayerController.OnGroundCheck -= HandleLanding;
         PlayerController.IsAirborne -= HandleMidair;
+        AmmoControl.OnAmmoSpriteChange -= HandleAmmoSpriteChange;
+        Player.GetComponent<PlayerController>().OnAmmoChange -= HandleAmmoChange;
     }
 
     private void HandleLanding()
@@ -98,6 +105,31 @@ public class Aiming : MonoBehaviour
             canReload = false;
         }
 
+    private void HandleAmmoSpriteChange()
+    {
+        spriteChanged = true;
+    }
+
+
+    private void HandleAmmoChange(object sender, PlayerController.OnAmmoChangeEventArgs e)
+    {
+        StartCoroutine(UponChangingAmmo());
+        
+    }
+
+    IEnumerator UponChangingAmmo()
+    {
+        yield return new WaitUntil(() => spriteChanged);
+       // yield return new WaitForSeconds(1f);
+        ammo = maximumAmmo; // Reset ammo count
+        magazineIsFull = true;
+        if (ammoControl != null)
+        {
+            ammoControl.SetAmmos(ammo);
+        }
+        Debug.Log("Reloaded");
+        spriteChanged = false;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -300,6 +332,8 @@ public class Aiming : MonoBehaviour
           }
       }
 
+
+  
 
 }
 

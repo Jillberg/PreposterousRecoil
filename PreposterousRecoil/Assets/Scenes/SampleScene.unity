@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 34405362}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -187,7 +187,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c77038bbed69e8b45b9fb49d33b43043, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1a5b5a8579cb2eb40805d0e3955ced13, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -252,7 +252,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 1, y: 1.625}
+    oldSize: {x: 1.0625, y: 1.625}
     newSize: {x: 0.15, y: 0.28}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -421,6 +421,19 @@ MonoBehaviour:
   BulletPrefab: {fileID: 7886473507490537581, guid: 69931f7bd290adf448062c5936bf25e6, type: 3}
   ShootingEffectPrefab: {fileID: 3121071872506326573, guid: b42ecbdd9fc42384d80f48eb6f14d913, type: 3}
   RotatePoint: {fileID: 1204739102}
+  Player: {fileID: 34405354}
+  defaultAmmo: {fileID: 0}
+  defaultAmmoEffect: {fileID: 21300000, guid: 9724321b1c61c0e4bbdd9f4045bb4250, type: 3}
+  defaultCursor: {fileID: 2800000, guid: de5f4b21acf2738449e82b0d634e933b, type: 3}
+  airAmmo: {fileID: 0}
+  airAmmoEffect: {fileID: 21300000, guid: 9724321b1c61c0e4bbdd9f4045bb4250, type: 3}
+  airCursor: {fileID: 2800000, guid: 33044fb8837cb524e82d8b73f0dfe105, type: 3}
+  fireAmmo: {fileID: 21300000, guid: 6b461c8f176db244aae66e36083d4552, type: 3}
+  fireAmmoEffect: {fileID: 21300000, guid: a00b01c1b0a342f479e163f03f101dc8, type: 3}
+  fireCursor: {fileID: 2800000, guid: 8ee0d8a6171703a46b3b440685e2c776, type: 3}
+  magicAmmo: {fileID: 21300000, guid: e0eac17b8bc58354ebe6aab4ab020061, type: 3}
+  magicAmmoEffect: {fileID: 21300000, guid: 62d98afb1f03b104484cc7194e425733, type: 3}
+  magicCursor: {fileID: 2800000, guid: d4ad7da64d6be594996c22022356e779, type: 3}
 --- !u!95 &34405362
 Animator:
   serializedVersion: 5
@@ -11591,6 +11604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 475623001}
+  Player: {fileID: 34405354}
   rb: {fileID: 34405358}
   playerTransform: {fileID: 34405356}
   recoilStrength: 60
@@ -11724,8 +11738,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CartridgePrefab: {fileID: 7698600200574505256, guid: 764d26a0d13d6d34ab297470f83c1b19, type: 3}
-  AmmoLoaded: {fileID: 21300000, guid: 9eb1cf56262aeda4ea64d1eae5ec0e4e, type: 3}
+  AmmoLoaded: {fileID: 21300000, guid: ee6819e772f5b8b4dba0ea069f8f0a82, type: 3}
   AmmoUsed: {fileID: 21300000, guid: ba508ba7cfed738468d7544c64f3fc14, type: 3}
+  Player: {fileID: 34405354}
+  airAmmoLoaded: {fileID: 21300000, guid: ee6819e772f5b8b4dba0ea069f8f0a82, type: 3}
+  fireAmmoLoaded: {fileID: 21300000, guid: 894cbe80ea08b2a42b23924b8b628ecc, type: 3}
+  magicAmmoLoaded: {fileID: 21300000, guid: 9eb1cf56262aeda4ea64d1eae5ec0e4e, type: 3}
 --- !u!114 &1987195889
 MonoBehaviour:
   m_ObjectHideFlags: 0

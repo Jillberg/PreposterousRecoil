@@ -16,6 +16,12 @@ public class PlayerController : MonoBehaviour
     public static event Action OnGroundCheck;
     public static event Action IsAirborne;
 
+    public event EventHandler<OnAmmoChangeEventArgs> OnAmmoChange;
+    public class OnAmmoChangeEventArgs : EventArgs
+    {
+        public int ammoType;
+    }
+
     [Header("Movement")]
     public float moveSpeed = 5f;
     float horizontalMovement;
@@ -68,12 +74,23 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (horizontalMovement != 0&&canMove)
+        if (horizontalMovement == 0)
         {
-            rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
-           // Flip();
+            animator.SetBool("isMoving", false);
         }
-
+        else
+        {
+            animator.SetBool("isMoving", true);
+        }
+        
+        if (canMove)
+        {
+            
+            rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
+            
+            // Flip();
+        }
+        ChangeAmmoType();
     }
 
     void FixedUpdate()
@@ -155,6 +172,34 @@ public class PlayerController : MonoBehaviour
         else
         {
             rb.gravityScale = baseGravity;
+        }
+    }
+
+    private void ChangeAmmoType()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Debug.Log("Change ammo to air fryer");
+            OnAmmoChange?.Invoke(this, new OnAmmoChangeEventArgs
+            {
+                ammoType=1
+            });
+        }
+        else if (Input.GetKeyDown(KeyCode.O))
+        {
+            Debug.Log("Change ammo to fire blaster");
+            OnAmmoChange?.Invoke(this, new OnAmmoChangeEventArgs
+            {
+                ammoType = 2
+            });
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("Change ammo to elf legacy");
+            OnAmmoChange?.Invoke(this, new OnAmmoChangeEventArgs
+            {
+                ammoType = 3
+            });
         }
     }
 }

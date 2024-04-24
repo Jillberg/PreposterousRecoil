@@ -7,14 +7,19 @@ public class Bullet : MonoBehaviour
     private Vector3 shootDir;
     
     public float bulletSpeed = 20f;
-    
+ 
+
+
     public void Setup(Vector3 shootDirection)
     {
-        this.shootDir = shootDirection;
-        Rigidbody2D rigidbody=GetComponent<Rigidbody2D>();
-        rigidbody.AddForce(shootDir * bulletSpeed, ForceMode2D.Impulse);
-        transform.eulerAngles = new Vector3(0,0,GetAngleFromVectorFloat(shootDir));
-        Destroy(gameObject, 5f);
+       
+            this.shootDir = shootDirection;
+            Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
+            rigidbody.AddForce(shootDir * bulletSpeed, ForceMode2D.Impulse);
+            transform.eulerAngles = new Vector3(0, 0, GetAngleFromVectorFloat(shootDir));
+            Destroy(gameObject, 5f);
+        
+        
     }
 
    /*private void Update()
@@ -24,15 +29,20 @@ public class Bullet : MonoBehaviour
 
    private void OnTriggerEnter2D(Collider2D collision)
     {
-        /* Target target = collision.GetComponent<Target>();
-         if (target!= null) {
-             target.Damage();
-         }*/
-        if (collision.GetComponent<Mesh>()!=null){
-            Destroy(gameObject);
-            Debug.Log(collision);
+        
+        
+            /* Target target = collision.GetComponent<Target>();
+             if (target!= null) {
+                 target.Damage();
+             }*/
+            if (collision.GetComponent<Mesh>() != null)
+            {
+                Destroy(gameObject);
+                Debug.Log(collision);
 
+            
         }
+        
         
 
     }
