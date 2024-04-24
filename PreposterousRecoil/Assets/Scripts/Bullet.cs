@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, 5f);
     }
 
-   /* private void Update()
+   /*private void Update()
     {
         transform.position += shootDir * Time.deltaTime*10f;
     }*/

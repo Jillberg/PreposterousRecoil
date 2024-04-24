@@ -12,8 +12,9 @@ public class ShootingEffect : MonoBehaviour
     {
         this.shootDir = shootDirection;
         transform.eulerAngles = new Vector3(0, 0, GetAngleFromVectorFloat(shootDir));
-        Destroy(gameObject, Time.deltaTime*10);
+        Destroy(gameObject, Time.deltaTime*5f);
     }
+
 
     public static float GetAngleFromVectorFloat(Vector3 dir)
     {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Aiming;
 
 public class Aiming : MonoBehaviour
 {
@@ -10,8 +11,18 @@ public class Aiming : MonoBehaviour
     private Camera mainCam;
     private Vector3 mousePos;
     public Animator animator;
-    public static event Action OnRecoilStart;
-    public static event Action OnRecoilEnd;
+    //public static event Action OnRecoilStart;
+    //public static event Action OnRecoilEnd;
+    public event EventHandler<OnRecoilStartEventArgs> OnRecoilStart;
+    public class OnRecoilStartEventArgs : EventArgs
+    {
+        public string recoilAnimationCondition;
+    }
+    public event EventHandler<OnRecoilEndEventArgs> OnRecoilEnd;
+    public class OnRecoilEndEventArgs : EventArgs
+    {
+        public string recoilAnimationCondition;
+    }
     public event EventHandler<OnShootEventArgs> OnShoot;
     public class OnShootEventArgs:EventArgs
     {
@@ -19,10 +30,13 @@ public class Aiming : MonoBehaviour
         public Vector3 shootPosition;
       }
 
+    private string recoilAnimationCondition;
+
     private Transform gunPosition;
     private Transform gunEndPointPosition;
     public Rigidbody2D rb;  // Reference to the Rigidbody2D component
     public Transform playerTransform;
+    private float rotz;
 
     [Header("RecoilParameters")]
     public float recoilStrength = 5f;  // Adjustable recoil strength
@@ -130,7 +144,7 @@ public class Aiming : MonoBehaviour
         mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         Vector3 rotation = mousePos - transform.position;
-        float rotz = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
+        rotz = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, rotz);
         GunFlip();
         if (shouldFire)
@@ -150,11 +164,15 @@ public class Aiming : MonoBehaviour
     {
             ammo--;
             animator.SetBool("isRecoiling", true);
-             OnShoot?.Invoke(this,new OnShootEventArgs
+
+      
+        
+
+        OnShoot?.Invoke(this,new OnShootEventArgs
             {
                 gunEndPointPosition = gunEndPointPosition.position,
-                shootPosition=mousePos
-            });
+                shootPosition=mousePos,
+        });
             ApplyRecoil();
 
             if (ammoControl != null)
@@ -202,18 +220,43 @@ public class Aiming : MonoBehaviour
         fireDirection *= -1;
         rb.velocity = Vector2.zero;
         rb.AddForce(fireDirection * recoilStrength, ForceMode2D.Impulse);
+        Debug.Log(rotz);
 
-        OnRecoilStart?.Invoke();
-
-        // Assuming the recoil effect lasts 0.5 seconds, adjust as needed
-        StartCoroutine(EndRecoil());
+    if (rotz > 45 && rotz < 135)
+    {
+        recoilAnimationCondition = "isShootingSkywards";
+    }
+    else if (rotz < -45 && rotz> -135)
+    {
+        recoilAnimationCondition = "isShootingDownwards";
+        }
+        else
+    {
+        // Not aiming upwards - trigger the normal recoil animation
+        recoilAnimationCondition = "isPlayerRecoil";
     }
 
-    IEnumerator EndRecoil()
+    OnRecoilStart?.Invoke(this, new OnRecoilStartEventArgs
+    {
+        recoilAnimationCondition = recoilAnimationCondition
+    }) ;
+    
+
+    // Assuming the recoil effect lasts 0.5 seconds, adjust as needed
+    StartCoroutine(EndRecoil(recoilAnimationCondition));
+    }
+
+    IEnumerator EndRecoil(string condition)
     {
         yield return new WaitForSeconds(0.2f);
         animator.SetBool("isRecoiling",false);
-        OnRecoilEnd?.Invoke();
+        OnRecoilEnd?.Invoke(this, new OnRecoilEndEventArgs
+        {
+            recoilAnimationCondition = condition
+        }) ;
+
+    
+
     }
 
 

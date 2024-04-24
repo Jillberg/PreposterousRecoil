@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 34405358}
+  RotatePoint: {fileID: 1204739102}
   animator: {fileID: 34405362}
   moveSpeed: 25
   groundCheckPos: {fileID: 488308493}
@@ -1448,7 +1449,7 @@ Transform:
   m_GameObject: {fileID: 945987304}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.17, y: -0.14, z: 0}
+  m_LocalPosition: {x: 1.02, y: -0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

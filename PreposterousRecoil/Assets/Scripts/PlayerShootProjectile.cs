@@ -18,10 +18,12 @@ public class PlayerShootProjectile : MonoBehaviour
     private void PlayerShootProjectile_OnShoot(object sender,Aiming.OnShootEventArgs e)
     {
         Transform bulletTransform=Instantiate(BulletPrefab, e.gunEndPointPosition, Quaternion.identity);
+        Transform shootingEffectTransform = Instantiate(ShootingEffectPrefab, e.gunEndPointPosition, Quaternion.identity);
         Vector3 shootDirection = (e.shootPosition - e.gunEndPointPosition).normalized;
         bulletTransform.GetComponent<Bullet>().Setup(shootDirection);
-        Transform shootingEffectTransform = Instantiate(ShootingEffectPrefab, e.gunEndPointPosition, Quaternion.identity);
+        
         shootingEffectTransform.GetComponent<ShootingEffect>().Setup(shootDirection);
+        Debug.DrawLine(e.gunEndPointPosition,e.shootPosition);
 
     }
 }
