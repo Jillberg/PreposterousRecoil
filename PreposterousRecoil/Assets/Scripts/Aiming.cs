@@ -223,6 +223,7 @@ public class Aiming : MonoBehaviour
 
         // Initialize fill amount to zero
         loadingCircle.fillAmount = 0;
+        animator.SetBool("isReloading", true);
 
         while (reloadProgress < 1.0f)
         {
@@ -241,7 +242,7 @@ public class Aiming : MonoBehaviour
             ammoControl.UpdateAmmos(ammo);
         }
         Debug.Log("Reloaded");
-
+        animator.SetBool("isReloading", false);
         // Optionally, hide or reset the loading circle after reloading
         yield return new WaitForSeconds(0.5f); // Delay before hiding/resetting the fill
         loadingCircle.fillAmount = 0;

@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerSkyWardRecoil
+  m_Name: gunReload
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,7 +21,15 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 70c21e572a33af140949497567caae08, type: 3}
+      value: {fileID: 21300000, guid: 2e699c16af856b7418e1aff49a0ef277, type: 3}
+    - time: 0.31666666
+      value: {fileID: 21300000, guid: 50e307c4722e2534b967a3e7470c6b4e, type: 3}
+    - time: 0.51666665
+      value: {fileID: 21300000, guid: f42e1947337386a4a8e8ebe493bc2813, type: 3}
+    - time: 0.6666667
+      value: {fileID: 21300000, guid: fd753a46d6db28a44bd242aa9d732ce5, type: 3}
+    - time: 0.81666666
+      value: {fileID: 21300000, guid: 2e699c16af856b7418e1aff49a0ef277, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -44,13 +52,17 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 70c21e572a33af140949497567caae08, type: 3}
+    - {fileID: 21300000, guid: 2e699c16af856b7418e1aff49a0ef277, type: 3}
+    - {fileID: 21300000, guid: 50e307c4722e2534b967a3e7470c6b4e, type: 3}
+    - {fileID: 21300000, guid: f42e1947337386a4a8e8ebe493bc2813, type: 3}
+    - {fileID: 21300000, guid: fd753a46d6db28a44bd242aa9d732ce5, type: 3}
+    - {fileID: 21300000, guid: 2e699c16af856b7418e1aff49a0ef277, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.016666668
+    m_StopTime: 0.8333333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
