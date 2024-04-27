@@ -49,6 +49,7 @@ public class Aiming : MonoBehaviour
     private bool isReloading = false;
     public float reloadTime = 1f;
     private int ammo;
+    private bool canFire=true;
     public int maximumAmmo = 2;
     private bool shouldReload = false;
     private bool magazineIsFull = true;
@@ -72,6 +73,10 @@ public class Aiming : MonoBehaviour
     {
         PlayerController.OnGroundCheck += HandleLanding;
         PlayerController.IsAirborne += HandleMidair;
+
+        PlayerController.OnLandingStunBegin += HandleLandingStunBegin;
+        PlayerController.OnLandingStunEnd += HandleLandingStunEnd;
+
         AmmoControl.OnAmmoSpriteChange += HandleAmmoSpriteChange;
 
         Player.GetComponent<PlayerController>().OnAmmoChange += HandleAmmoChange;
@@ -81,8 +86,22 @@ public class Aiming : MonoBehaviour
     {
         PlayerController.OnGroundCheck -= HandleLanding;
         PlayerController.IsAirborne -= HandleMidair;
+
+        PlayerController.OnLandingStunBegin -= HandleLandingStunBegin;
+        PlayerController.OnLandingStunEnd -= HandleLandingStunEnd;
+
         AmmoControl.OnAmmoSpriteChange -= HandleAmmoSpriteChange;
         Player.GetComponent<PlayerController>().OnAmmoChange -= HandleAmmoChange;
+    }
+
+    private void HandleLandingStunBegin()
+    {
+        canFire = false;
+    }
+
+    private void HandleLandingStunEnd()
+    {
+        canFire = true;
     }
 
     private void HandleLanding()
@@ -157,8 +176,8 @@ public class Aiming : MonoBehaviour
         {
             magazineIsFull = false;
         }
-
-        if (Input.GetMouseButtonDown(0) && ammo > 0 && !isReloading)
+     
+        if (Input.GetMouseButtonDown(0) && ammo > 0 && !isReloading&&canFire)
         {
             shouldFire = true;
         }
@@ -171,14 +190,9 @@ public class Aiming : MonoBehaviour
 
     void FixedUpdate()
     {
-       
-
-        mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-        Vector3 rotation = mousePos - transform.position;
-        rotz = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, rotz);
-        GunFlip();
+        if(canFire) { Aim(); }
+        
+        
         if (shouldFire)
         {
             Fire();
@@ -192,10 +206,21 @@ public class Aiming : MonoBehaviour
         }
     }
 
+    private void Aim()
+    {
+        mousePos = mainCam.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0;
+        Vector3 rotation = mousePos - transform.position;
+        rotz = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, rotz);
+        GunFlip();
+    }
+
     private void Fire()
     {
             ammo--;
             animator.SetBool("isRecoiling", true);
+       
 
       
         
@@ -253,7 +278,7 @@ public class Aiming : MonoBehaviour
         fireDirection *= -1;
         rb.velocity = Vector2.zero;
         rb.AddForce(fireDirection * recoilStrength, ForceMode2D.Impulse);
-        Debug.Log(rotz);
+        //Debug.Log(rotz);
 
     if (rotz > 45 && rotz < 135)
     {

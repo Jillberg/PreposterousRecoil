@@ -1,21 +1,20 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-
+    [Header("SystemVariables")]
     public Rigidbody2D rb;
     Transform rotatePoint;
     [SerializeField] private GameObject RotatePoint;
     public Animator animator;
     private bool canMove = true;
-
     public static event Action OnGroundCheck;
     public static event Action IsAirborne;
-
+    public static event Action OnLandingStunBegin;
+    public static event Action OnLandingStunEnd;
     public event EventHandler<OnAmmoChangeEventArgs> OnAmmoChange;
     public class OnAmmoChangeEventArgs : EventArgs
     {
@@ -38,6 +37,13 @@ public class PlayerController : MonoBehaviour
     public float maxFallSpeed = 18f;
     public float fallSpeedMultiplier = 2f;
 
+    [Header("Falling")]
+    public float stunThreshold = -30f;
+    /*private float fallingSpeed;
+    private Vector2 fallingPosition = new Vector2(0f, 0f);
+    private float fallingTime;*/
+    private float speedJustBeforeLanding;
+    public float stunTime = 1f;
 
 
     void OnEnable()
@@ -98,6 +104,10 @@ public class PlayerController : MonoBehaviour
         SendOnGroundCheckEvent();
         SendIsAirborneEvent();
         ProcessGravity();
+        if (!IsGrounded())
+        {
+            speedJustBeforeLanding = rb.velocity.y;
+        }
     }
     
 
@@ -128,6 +138,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer))
         {
+            
             return true;
         }
        
@@ -137,14 +148,39 @@ public class PlayerController : MonoBehaviour
     private void SendOnGroundCheckEvent()
     {
         bool currentStatus = IsGrounded();
+       /*if (fallingSpeed > rb.velocity.y)
+        {
+            fallingSpeed = rb.velocity.y;
+            fallingPosition = rb.position;
+            fallingTime = Time.time;
+        }*/
         if (currentStatus&&! wasGroundedLastFrame)
         {
             OnGroundCheck?.Invoke();
-            Debug.Log("Just touched the ground");
-            Debug.Log(rb.velocity.y);
+            if (speedJustBeforeLanding < stunThreshold)
+            {
+                Debug.Log("should stun");
+                StartCoroutine(ProcessStun(stunTime));
+            }
+            /*Debug.Log(rb.velocity.y + " " + rb.position.y+" "+Time.time+"and intended speed"+speedJustBeforeLanding);
+            Debug.Log("Just touched the ground" + fallingSpeed + " " + rb.position.y + " " + fallingTime);*/
+            
         }
         wasGroundedLastFrame= currentStatus;
     }
+    
+    IEnumerator ProcessStun(float stunTime)
+    {
+        OnLandingStunBegin?.Invoke();
+        canMove = false;
+        GetComponent<SpriteRenderer>().color = Color.blue;
+        yield return new WaitForSeconds(stunTime);
+        GetComponent<SpriteRenderer>().color = Color.white;
+        canMove = true;
+        OnLandingStunEnd?.Invoke();
+
+    }
+
 
     private void SendIsAirborneEvent()
     {
