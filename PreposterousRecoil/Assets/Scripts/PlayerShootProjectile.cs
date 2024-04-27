@@ -99,7 +99,7 @@ public class PlayerShootProjectile : MonoBehaviour
         }
         else
         {
-            Destroy(bulletTransform.gameObject, 0.5  f);
+            Destroy(bulletTransform.gameObject, 0.5f);
         }
         shootingEffectTransform.GetComponent<ShootingEffect>().Setup(shootDirection);
         SpriteRenderer shootingEffectSpriteRenderer = shootingEffectTransform.Find("ShootingEffect").GetComponent<SpriteRenderer>();

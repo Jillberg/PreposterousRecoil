@@ -327,8 +327,9 @@ public class Aiming : MonoBehaviour
             ls.y *= -1;
             ls.x *= -1;
             lls.x *= -1;
-             transform.localScale=ls;
-              playerTransform.localScale=lls;
+            playerTransform.localScale = lls;
+            transform.localScale=ls;
+            
 
           }
       }
