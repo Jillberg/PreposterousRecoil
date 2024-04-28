@@ -21,6 +21,7 @@ public class CinemachineShake : MonoBehaviour
     void Awake()
     {
         RotatePoint.GetComponent<Aiming>().OnShoot += ShakeCamera_OnShoot;
+        PlayerHearts.OnHitBegin += HandleOnHitBegin;
         cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
         cinemachineBasicMultiChannelPerlin = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
@@ -41,6 +42,15 @@ public class CinemachineShake : MonoBehaviour
         {
            CameraShake(shakeIntensity, shakeTime);
  
+        }
+    }
+
+    private void HandleOnHitBegin()
+    {
+        if (cinemachineVirtualCamera != null)
+        {
+            CameraShake(shakeIntensity, shakeTime);
+
         }
     }
 

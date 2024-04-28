@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
         public int ammoType;
     }
 
+    private bool beingHit = false;
+
     [Header("Movement")]
     public float moveSpeed = 5f;
     float horizontalMovement;
@@ -50,12 +52,16 @@ public class PlayerController : MonoBehaviour
     {
         RotatePoint.GetComponent<Aiming>().OnRecoilStart += HandleRecoilStart;
         RotatePoint.GetComponent<Aiming>().OnRecoilEnd += HandleRecoilEnd;
+        PlayerHearts.OnHitBegin += HandleOnHitBegin;
+        PlayerHearts.OnHitEnd += HandleOnHitEnd;
     }
 
     void OnDisable()
     {
         RotatePoint.GetComponent<Aiming>().OnRecoilStart -= HandleRecoilStart;
         RotatePoint.GetComponent<Aiming>().OnRecoilEnd -= HandleRecoilEnd;
+        PlayerHearts.OnHitBegin -= HandleOnHitBegin;
+        PlayerHearts.OnHitEnd -= HandleOnHitEnd;
     }
 
 
@@ -69,6 +75,15 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetBool(e.recoilAnimationCondition, false);
         canMove = true;
+    }
+
+    private void HandleOnHitBegin()
+    {
+        beingHit=true;
+    }
+    private void HandleOnHitEnd()
+    {
+        beingHit = false;
     }
 
 
@@ -89,7 +104,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isMoving", true);
         }
         
-        if (canMove)
+        if (canMove&&!beingHit)
         {
             
             rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);

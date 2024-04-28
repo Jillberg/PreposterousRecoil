@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
     private Vector3 shootDir;
     
     public float bulletSpeed = 20f;
- 
+    public int bulletDamage;
 
 
     public void Setup(Vector3 shootDirection)
@@ -31,10 +31,11 @@ public class Bullet : MonoBehaviour
     {
         
         
-            /* Target target = collision.GetComponent<Target>();
-             if (target!= null) {
-                 target.Damage();
-             }*/
+             Enemy enemy = collision.GetComponent<Enemy>();
+             if (enemy!= null) {
+                 enemy.Damage(bulletDamage);
+                 Destroy(gameObject);
+              }
             if (collision.GetComponent<Mesh>() != null)
             {
                 Destroy(gameObject);

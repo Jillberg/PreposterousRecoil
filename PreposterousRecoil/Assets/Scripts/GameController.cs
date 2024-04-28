@@ -16,9 +16,16 @@ public class GameController : MonoBehaviour
 
     private void DisplayGameOverScreen() 
     {
-    
-    gameOverScreen.SetActive(true);
-        Time.timeScale = 0;
+
+        if (gameOverScreen != null)
+        {
+            gameOverScreen.SetActive(true);
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Debug.LogError("GameOverScreen is missing!");
+        }
 
     }
 
@@ -26,5 +33,6 @@ public class GameController : MonoBehaviour
     {
         gameOverScreen.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 }
