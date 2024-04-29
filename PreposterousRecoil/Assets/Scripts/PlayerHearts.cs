@@ -50,6 +50,15 @@ public class PlayerHearts : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Trap trap = collision.GetComponent<Trap>();
+        if (trap != null && canTakeDamage)
+        {
+            TakeDamage(trap.damage);
+        }
+    }
+
     private void TakeDamage(int damage)
     {
         currentHealth -= damage;

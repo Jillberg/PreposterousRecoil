@@ -63,11 +63,11 @@ public class SlimeMovement : MonoBehaviour
         
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-           //do sth
+            isGrounded = true;
         }
         if (collision.gameObject.layer != LayerMask.NameToLayer("Wall"))
         {
-            isGrounded = true;
+            //isGrounded = true;
         }
     }
 }
