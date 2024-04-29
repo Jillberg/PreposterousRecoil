@@ -40,8 +40,10 @@ public class SlimeMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(shouldJump&&isGrounded)
+        Debug.Log(isGrounded);
+        if (shouldJump&&isGrounded)
         {
+            
             Jump();
         }
     }
@@ -49,7 +51,7 @@ public class SlimeMovement : MonoBehaviour
     private void Jump()
     {
         
-        Vector2 direction=(playerTransform.position-playerTransform.position).normalized;
+        Vector2 direction=(transform.position-playerTransform.position).normalized;
         rb.AddForce(new Vector2((direction * -jumpForce).x,jumpForce),ForceMode2D.Impulse);
         isGrounded = false;
         

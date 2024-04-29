@@ -57,6 +57,18 @@ public class PlayerHearts : MonoBehaviour
         {
             TakeDamage(trap.damage);
         }
+
+        Enemy enemy = collision.GetComponent<Enemy>();
+
+        if (enemy != null && canTakeDamage)
+        {
+            Vector2 fireDirection = (collision.GetComponent<Transform>().position - transform.position).normalized;
+            rb.AddForce(fireDirection * knockBackForce, ForceMode2D.Impulse);
+            float direction = collision.GetComponent<Transform>().position.x - transform.position.x;
+            Debug.Log(fireDirection);
+
+            TakeDamage(enemy.damage);
+        }
     }
 
     private void TakeDamage(int damage)

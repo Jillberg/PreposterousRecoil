@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [Header("SystemVariables")]
     public Rigidbody2D rb;
     Transform rotatePoint;
+    public ParticleSystem dust;
     [SerializeField] private GameObject RotatePoint;
     public Animator animator;
     private bool canMove = true;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     float horizontalMovement;
     private bool isFacingRight = true;
+    
 
     [Header("GroundCheck")]
     public Transform groundCheckPos;
@@ -125,7 +127,13 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-
+    private void directionCheck()
+    {
+        if (transform.localScale.x > 0)
+        {
+            isFacingRight = true;
+        }
+    }
 
     public void Move(InputAction.CallbackContext context)
     {
@@ -163,22 +171,17 @@ public class PlayerController : MonoBehaviour
     private void SendOnGroundCheckEvent()
     {
         bool currentStatus = IsGrounded();
-       /*if (fallingSpeed > rb.velocity.y)
-        {
-            fallingSpeed = rb.velocity.y;
-            fallingPosition = rb.position;
-            fallingTime = Time.time;
-        }*/
+       
         if (currentStatus&&! wasGroundedLastFrame)
         {
             OnGroundCheck?.Invoke();
+            PlayEffect();
             if (speedJustBeforeLanding < stunThreshold)
             {
                 Debug.Log("should stun");
                 StartCoroutine(ProcessStun(stunTime));
             }
-            /*Debug.Log(rb.velocity.y + " " + rb.position.y+" "+Time.time+"and intended speed"+speedJustBeforeLanding);
-            Debug.Log("Just touched the ground" + fallingSpeed + " " + rb.position.y + " " + fallingTime);*/
+            
             
         }
         wasGroundedLastFrame= currentStatus;
@@ -252,5 +255,10 @@ public class PlayerController : MonoBehaviour
                 ammoType = 3
             });
         }
+    }
+
+    private void PlayEffect()
+    {
+        dust.Play();
     }
 }

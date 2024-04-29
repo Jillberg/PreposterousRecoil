@@ -11,6 +11,7 @@ public class Aiming : MonoBehaviour
     private Camera mainCam;
     private Vector3 mousePos;
     public Animator animator;
+    public ParticleSystem dust;
     private bool spriteChanged = false;
     [SerializeField] private GameObject Player;
     //public static event Action OnRecoilStart;
@@ -352,15 +353,22 @@ public class Aiming : MonoBehaviour
             ls.y *= -1;
             ls.x *= -1;
             lls.x *= -1;
+            dust.transform.localScale = lls;
+            
             playerTransform.localScale = lls;
             transform.localScale=ls;
-            
 
-          }
+            PlayEffect();
+
+
+        }
       }
 
 
-  
+    private void PlayEffect()
+    {
+        dust.Play();
+    }
 
 }
 
