@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     [Header("SystemVariables")]
     public Rigidbody2D rb;
     Transform rotatePoint;
@@ -17,6 +19,13 @@ public class PlayerController : MonoBehaviour
     public static event Action OnLandingStunBegin;
     public static event Action OnLandingStunEnd;
     public event EventHandler<OnAmmoChangeEventArgs> OnAmmoChange;
+    //awakeFunc-by Shy
+    //This is the old way to declare a instance of this file, maybe you can use a better way to instead it.
+    private void Awake()
+    {
+        instance = this;
+    }
+    //changed by shy, might be a dangerous code segment.
     public class OnAmmoChangeEventArgs : EventArgs
     {
         public int ammoType;
