@@ -131,6 +131,8 @@ public class Aiming : MonoBehaviour
     private void HandlePlayerRespawn()
     {
         canFire = true;
+        ammo = maximumAmmo;
+        ammoControl.UpdateAmmos(ammo);
     }
 
     private void HandleLanding()
