@@ -170,6 +170,11 @@ public class Aiming : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("____________");
+        Debug.Log(isReloading);
+        Debug.Log(canReload);
+        Debug.Log(magazineIsFull);
+        Debug.Log(shouldReload);
 
         ProcessAccurateReload();
 
@@ -183,9 +188,10 @@ public class Aiming : MonoBehaviour
             shouldFire = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && !isReloading&&canReload&&!magazineIsFull)
+        if (Input.GetKeyDown(KeyCode.R) && !isReloading && canReload && !magazineIsFull)
         {
             shouldReload = true;
+            //Debug.Log("reload");
         }
     }
 

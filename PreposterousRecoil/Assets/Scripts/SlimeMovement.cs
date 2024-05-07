@@ -40,7 +40,8 @@ public class SlimeMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log(isGrounded);
+        //Debug.Log(isGrounded);
+
         if (shouldJump&&isGrounded)
         {
             
