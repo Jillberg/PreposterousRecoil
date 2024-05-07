@@ -37,11 +37,11 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     float horizontalMovement;
     private bool isFacingRight = true;
-    
+
 
     [Header("GroundCheck")]
     public Transform groundCheckPos;
-    public Vector2 groundCheckSize=new Vector2(0.5f,0.5f);
+    public Vector2 groundCheckSize = new Vector2(0.5f, 0.5f);
     public LayerMask groundLayer;
     private bool wasGroundedLastFrame = false;
 
@@ -58,6 +58,10 @@ public class PlayerController : MonoBehaviour
     private float speedJustBeforeLanding;
     public float stunTime = 1f;
 
+    [Header("PowerUps")]
+    private bool haveGainedPowerAmmo=false;
+    private bool haveGainedMagicAmmo=false;
+
 
     void OnEnable()
     {
@@ -65,6 +69,8 @@ public class PlayerController : MonoBehaviour
         RotatePoint.GetComponent<Aiming>().OnRecoilEnd += HandleRecoilEnd;
         PlayerHearts.OnHitBegin += HandleOnHitBegin;
         PlayerHearts.OnHitEnd += HandleOnHitEnd;
+        PowerAmmoPowerUps.CollectPowerAmmo += OnPowerAmmoGained;
+        MagicAmmoPowerUps.CollectMagicAmmo += OnMagicAmmoGained;
     }
 
     void OnDisable()
@@ -73,8 +79,19 @@ public class PlayerController : MonoBehaviour
         RotatePoint.GetComponent<Aiming>().OnRecoilEnd -= HandleRecoilEnd;
         PlayerHearts.OnHitBegin -= HandleOnHitBegin;
         PlayerHearts.OnHitEnd -= HandleOnHitEnd;
+        PowerAmmoPowerUps.CollectPowerAmmo -= OnPowerAmmoGained;
+        MagicAmmoPowerUps.CollectMagicAmmo -= OnMagicAmmoGained;
     }
 
+    private void OnMagicAmmoGained()
+    {
+        haveGainedMagicAmmo = true;
+    }
+
+    private void OnPowerAmmoGained()
+    {
+        haveGainedPowerAmmo = true;
+    }
 
     private void HandleRecoilStart(object sender, Aiming.OnRecoilStartEventArgs e)
     {
@@ -248,7 +265,7 @@ public class PlayerController : MonoBehaviour
                 ammoType=1
             });
         }
-        else if (Input.GetKeyDown(KeyCode.O))
+        else if (Input.GetKeyDown(KeyCode.O)&&haveGainedPowerAmmo)
         {
             Debug.Log("Change ammo to fire blaster");
             OnAmmoChange?.Invoke(this, new OnAmmoChangeEventArgs
@@ -256,7 +273,7 @@ public class PlayerController : MonoBehaviour
                 ammoType = 2
             });
         }
-        else if (Input.GetKeyDown(KeyCode.P))
+        else if (Input.GetKeyDown(KeyCode.P)&&haveGainedMagicAmmo)
         {
             Debug.Log("Change ammo to elf legacy");
             OnAmmoChange?.Invoke(this, new OnAmmoChangeEventArgs

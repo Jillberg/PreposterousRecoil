@@ -171,11 +171,12 @@ public class Aiming : MonoBehaviour
     {
         yield return new WaitUntil(() => spriteChanged);
        // yield return new WaitForSeconds(1f);
-        ammo = maximumAmmo; // Reset ammo count
+       // ammo = maximumAmmo; // Reset ammo count
         magazineIsFull = true;
         if (ammoControl != null)
         {
-            ammoControl.SetAmmos(ammo);
+            ammoControl.SetAmmos(maximumAmmo);
+            ammoControl.UpdateAmmos(ammo);
         }
         Debug.Log("Reloaded");
         spriteChanged = false;
