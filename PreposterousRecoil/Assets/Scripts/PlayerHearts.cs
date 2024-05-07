@@ -39,13 +39,20 @@ public class PlayerHearts : MonoBehaviour
     void OnEnable()
     {
         HealthPowerUps.CollectExtraHealth += IncreaseMaximumHealth;
+        HealthPotion.CollectHealthPotion += HandleRestoreHealth;
     }
 
     void OnDisable()
     {
         HealthPowerUps.CollectExtraHealth -= IncreaseMaximumHealth;
+        HealthPotion.CollectHealthPotion -= HandleRestoreHealth;
     }
 
+    private void HandleRestoreHealth()
+    {
+        currentHealth = maximumHealth;
+        heartUI.SetHearts(currentHealth);
+    }
 
     public void Respawn()
     {
