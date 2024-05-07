@@ -78,6 +78,9 @@ public class Aiming : MonoBehaviour
         PlayerController.OnLandingStunBegin += HandleLandingStunBegin;
         PlayerController.OnLandingStunEnd += HandleLandingStunEnd;
 
+        PlayerHearts.OnPlayerDied += HandlePlayerDead;
+        PlayerHearts.OnRespawn += HandlePlayerRespawn;
+
         AmmoControl.OnAmmoSpriteChange += HandleAmmoSpriteChange;
 
         Player.GetComponent<PlayerController>().OnAmmoChange += HandleAmmoChange;
@@ -91,6 +94,9 @@ public class Aiming : MonoBehaviour
         PlayerController.OnLandingStunBegin -= HandleLandingStunBegin;
         PlayerController.OnLandingStunEnd -= HandleLandingStunEnd;
 
+        PlayerHearts.OnPlayerDied -= HandlePlayerDead;
+        PlayerHearts.OnRespawn += HandlePlayerRespawn;
+
         AmmoControl.OnAmmoSpriteChange -= HandleAmmoSpriteChange;
         Player.GetComponent<PlayerController>().OnAmmoChange -= HandleAmmoChange;
     }
@@ -101,6 +107,16 @@ public class Aiming : MonoBehaviour
     }
 
     private void HandleLandingStunEnd()
+    {
+        canFire = true;
+    }
+
+    private void HandlePlayerDead()
+    {
+        canFire = false;
+    }
+
+    private void HandlePlayerRespawn()
     {
         canFire = true;
     }
@@ -170,11 +186,6 @@ public class Aiming : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("____________");
-        Debug.Log(isReloading);
-        Debug.Log(canReload);
-        Debug.Log(magazineIsFull);
-        Debug.Log(shouldReload);
 
         ProcessAccurateReload();
 

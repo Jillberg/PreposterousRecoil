@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
 {
 
     public GameObject gameOverScreen;
+    public PlayerHearts hearts;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +33,8 @@ public class GameController : MonoBehaviour
     public void Reset()
     {
         gameOverScreen.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        hearts.Respawn();
         Time.timeScale = 1;
     }
 }

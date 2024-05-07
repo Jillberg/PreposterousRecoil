@@ -14,6 +14,7 @@ public class PlayerHearts : MonoBehaviour
     public static event Action OnHitBegin;
     public static event Action OnHitEnd;
 
+    public Transform checkPoint;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
 
@@ -23,6 +24,7 @@ public class PlayerHearts : MonoBehaviour
     public float knockBackTime;
     public HeartUI heartUI;
     public static event Action OnPlayerDied;
+    public static event Action OnRespawn;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +32,36 @@ public class PlayerHearts : MonoBehaviour
         heartUI.SetHearts(currentHealth);
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        //checkPoint.position = new Vector3(0, 0, 0);
+
     }
 
+    void OnEnable()
+    {
+        HealthPowerUps.CollectExtraHealth += IncreaseMaximumHealth;
+    }
+
+    void OnDisable()
+    {
+        HealthPowerUps.CollectExtraHealth -= IncreaseMaximumHealth;
+    }
+
+
+    public void Respawn()
+    {
+        currentHealth = maximumHealth;
+        heartUI.SetHearts(currentHealth);
+        transform.position=checkPoint.position;
+        OnRespawn?.Invoke();
+    }
+
+    private void IncreaseMaximumHealth()
+    {
+        maximumHealth++;
+        currentHealth = maximumHealth;
+        heartUI.SetHearts(currentHealth);
+        Debug.Log("++");
+    }
 
      void OnCollisionEnter2D(Collision2D collision)
     {
@@ -68,6 +98,11 @@ public class PlayerHearts : MonoBehaviour
             Debug.Log(fireDirection);
 
             TakeDamage(enemy.damage);
+        }
+        
+        if (collision.transform.tag == "CheckPoint")
+        {
+            checkPoint= collision.transform;
         }
     }
 

@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
 {
 
     [SerializeField] GameObject pauseMenu;
+    public PlayerHearts hearts;
     public void Home()
     {
         SceneManager.LoadSceneAsync(0);
@@ -23,7 +24,9 @@ public class PauseMenu : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        pauseMenu.SetActive(false);
+        hearts.Respawn();
         Time.timeScale = 1;
 
     }
