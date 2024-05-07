@@ -25,6 +25,9 @@ public class PlayerHearts : MonoBehaviour
     public HeartUI heartUI;
     public static event Action OnPlayerDied;
     public static event Action OnRespawn;
+    private bool isInSwamp = false;
+    private float swampTimer = 1.5f;
+    private float poisonInterval = 1.5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -110,6 +113,53 @@ public class PlayerHearts : MonoBehaviour
         if (collision.transform.tag == "CheckPoint")
         {
             checkPoint= collision.transform;
+        }
+
+        if (collision.transform.tag == "PoisonousSwamp"&&!isInSwamp)
+        {
+            isInSwamp = true;
+            if (isInSwamp)
+            {
+                Debug.Log("should start getting poisoned");
+                StartCoroutine(GettingPoisoned());
+            }
+
+            Debug.Log("enter swamp");
+
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.transform.tag == "PoisonousSwamp")
+        {
+
+            
+            isInSwamp = false;
+            Debug.Log("exit swamp");
+
+        }
+    }
+
+    
+
+    private IEnumerator GettingPoisoned()
+    {
+        while (isInSwamp)
+        {
+            Debug.Log("should be poisoned");
+            while (swampTimer<poisonInterval)
+            {
+                swampTimer += Time.deltaTime;
+                yield return null;  // Wait a frame then continue
+                if(!isInSwamp )
+                {
+                    yield break;
+                }
+            }
+            TakeDamage(1);
+            swampTimer = 0;
+            
         }
     }
 
