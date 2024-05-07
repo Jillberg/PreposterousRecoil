@@ -81,6 +81,8 @@ public class Aiming : MonoBehaviour
         PlayerHearts.OnPlayerDied += HandlePlayerDead;
         PlayerHearts.OnRespawn += HandlePlayerRespawn;
 
+        AmmoPowerUps.CollectExtraAmmo += HandleAmmoIncrease;
+
         AmmoControl.OnAmmoSpriteChange += HandleAmmoSpriteChange;
 
         Player.GetComponent<PlayerController>().OnAmmoChange += HandleAmmoChange;
@@ -97,8 +99,18 @@ public class Aiming : MonoBehaviour
         PlayerHearts.OnPlayerDied -= HandlePlayerDead;
         PlayerHearts.OnRespawn += HandlePlayerRespawn;
 
+        AmmoPowerUps.CollectExtraAmmo -= HandleAmmoIncrease;
+
         AmmoControl.OnAmmoSpriteChange -= HandleAmmoSpriteChange;
         Player.GetComponent<PlayerController>().OnAmmoChange -= HandleAmmoChange;
+    }
+
+    private void HandleAmmoIncrease()
+    {
+        maximumAmmo++;
+        ammo = maximumAmmo;
+        ammoControl.SetAmmos(ammo);
+        ammoControl.UpdateAmmos(ammo);
     }
 
     private void HandleLandingStunBegin()
